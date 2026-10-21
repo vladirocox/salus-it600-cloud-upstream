@@ -195,6 +195,7 @@ Automatically installed:
 - **VS10/VS20** - Wired thermostats
 - **SQ610** - Thermostat with humidity sensor
 - **FC600** - Fan coil thermostat
+- **IT800TX** - Thermostat reporting `ep1` shadow properties
 
 ### Switches/Relays
 - **RS600** - Relay switch
