@@ -237,3 +237,19 @@ async def test_it800_set_temperature_uses_ep1_properties() -> None:
     ]
     assert entity.target_temperature == 21.5
     assert entity.preset_mode == "manual"
+
+
+async def test_it800_preset_mode_uses_ep1_hold_type() -> None:
+    """Preset changes of an iT800 thermostat use the ep1 hold type property."""
+
+    api = FakeApi()
+    api.shadows[fixtures.THERMOSTAT_CODE] = fixtures.it800_thermostat_shadow(hold_type=0)
+    coordinator, connection, _ = await create_coordinator(api)
+    entity = _entity(coordinator)
+
+    with patch(CALL_LATER):
+        await entity.async_set_preset_mode("away")
+
+    assert connection.published == [(fixtures.THERMOSTAT_CODE, "11", {"ep1:sComm:SetHoldType": 7})]
+    assert entity.preset_mode == "away"
+    assert entity.hvac_mode == HVACMode.OFF
